@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dashboard — Zen Ceramic Staff</title>
+<link rel="icon" href="https://zenceramic.asia/wp-content/uploads/2025/12/Zen-Ceramic-Logo-Transparent-1000-x-1000-px-1.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;padding-bottom:80px;-webkit-tap-highlight-color:transparent}
+
+/* ── Top bar ── */
+.topbar{background:#fff;border-bottom:1px solid #E8E0D8;padding:12px 16px;position:sticky;top:0;z-index:100}
+.topbar-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-left img{height:32px}
+.topbar-title{font-family:'Playfair Display',serif;font-size:17px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.branch-label{font-size:12px;color:#7A7067;background:#F5F0EB;padding:4px 10px;border-radius:8px;font-weight:600}
+.btn-logout{background:none;border:1px solid #E8E0D8;border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#7A7067;cursor:pointer;transition:all .2s}
+.btn-logout:hover{border-color:#C1714F;color:#C1714F}
+
+/* ── Tabs ── */
+.tabs{max-width:600px;margin:0 auto;display:flex;padding:12px 16px 0;gap:4px}
+.tab{flex:1;text-align:center;padding:10px;font-size:13px;font-weight:600;color:#7A7067;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;border-radius:8px 8px 0 0}
+.tab:hover{color:#2D2926;background:#F5F0EB}
+.tab.active{color:#C1714F;border-bottom-color:#C1714F;background:#FFF9F5}
+
+/* ── Content ── */
+.content{max-width:600px;margin:0 auto;padding:16px}
+
+/* ── Date header ── */
+.date-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.date-header h2{font-family:'Playfair Display',serif;font-size:20px}
+.date-header .date-sub{font-size:13px;color:#7A7067}
+.btn-refresh{background:none;border:1px solid #E8E0D8;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:16px}
+.btn-refresh:hover{border-color:#C1714F;background:#FFF9F5}
+.btn-refresh.spinning svg{animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Summary bar ── */
+.summary-bar{display:flex;gap:8px;margin-bottom:20px}
+.summary-item{flex:1;background:#fff;border:1.5px solid #E8E0D8;border-radius:12px;padding:12px;text-align:center}
+.summary-num{font-size:22px;font-weight:700;color:#C1714F}
+.summary-label{font-size:11px;color:#7A7067;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ── Slot section ── */
+.slot-section{margin-bottom:20px}
+.slot-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border:1.5px solid #E8E0D8;border-radius:12px 12px 0 0;border-bottom:none}
+.slot-time{font-weight:700;font-size:14px}
+.slot-count{font-size:12px;color:#7A7067}
+.slot-count .num{font-weight:700;color:#C1714F}
+.slot-empty{padding:16px 14px;background:#fff;border:1.5px solid #E8E0D8;border-top:none;border-radius:0 0 12px 12px;text-align:center;font-size:13px;color:#BEB5AC}
+
+/* ── Booking card ── */
+.booking-card{background:#fff;border-left:1.5px solid #E8E0D8;border-right:1.5px solid #E8E0D8;border-bottom:1.5px solid #E8E0D8;padding:14px}
+.booking-card:last-child{border-radius:0 0 12px 12px}
+.booking-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.booking-name{font-weight:700;font-size:14px}
+.booking-id{font-size:11px;color:#7A7067;font-family:monospace}
+.booking-meta{font-size:12px;color:#7A7067;margin-top:4px;line-height:1.6}
+.booking-pax{display:inline-block;background:#FFF3CD;color:#856404;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+.booking-participants{font-size:12px;color:#5A5249;margin-top:6px;line-height:1.6;padding:8px 10px;background:#FDFAF7;border-radius:8px}
+
+/* ── Check-in button ── */
+.btn-checkin{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px 14px;border-radius:10px;border:1.5px solid #E8E0D8;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#2D2926;cursor:pointer;transition:all .2s;width:100%}
+.btn-checkin:hover{border-color:#27AE60;background:#F0FFF4}
+.btn-checkin:active{transform:scale(0.98)}
+.btn-checkin .check-icon{width:22px;height:22px;border-radius:50%;border:2px solid #BEB5AC;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.btn-checkin.checked-in{border-color:#27AE60;background:#D4EDDA}
+.btn-checkin.checked-in .check-icon{background:#27AE60;border-color:#27AE60;color:#fff}
+.btn-checkin.checking{opacity:.6;pointer-events:none}
+
+/* ── Status badges ── */
+.status-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;margin-left:6px}
+.status-paid{background:#D4EDDA;color:#155724}
+.status-collect{background:#FFE0B2;color:#E65100}
+.status-checked{background:#27AE60;color:#fff}
+
+/* ── Week view ── */
+.week-grid{display:grid;gap:8px}
+.week-day{background:#fff;border:1.5px solid #E8E0D8;border-radius:12px;padding:14px}
+.week-day.closed{opacity:.5}
+.week-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.week-day-name{font-weight:700;font-size:14px}
+.week-day-date{font-size:12px;color:#7A7067}
+.week-day-closed{font-size:12px;color:#C0392B;font-weight:600}
+.week-slots{display:flex;flex-wrap:wrap;gap:6px}
+.week-slot{font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid #E8E0D8;background:#FDFAF7}
+.week-slot .slot-fill{font-weight:700}
+.week-slot.full{border-color:#C0392B;background:#FFF0EE}
+.week-slot.has-bookings{border-color:#C1714F;background:#FFF9F5}
+
+/* ── Branch picker (managers) ── */
+.branch-picker{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.branch-chip{padding:8px 14px;border-radius:10px;border:1.5px solid #E8E0D8;background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#7A7067;cursor:pointer;transition:all .2s}
+.branch-chip:hover{border-color:#C1714F;color:#C1714F}
+.branch-chip.active{background:#C1714F;color:#fff;border-color:#C1714F}
+
+/* ── Loading ── */
+.page-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px}
+.page-loading .spinner{width:28px;height:28px;border:3px solid #E8E0D8;border-top-color:#C1714F;border-radius:50%;animation:spin .6s linear infinite}
+.page-loading p{font-size:13px;color:#7A7067}
+
+/* ── Empty state ── */
+.empty-state{text-align:center;padding:40px 20px}
+.empty-state .icon{font-size:48px;margin-bottom:12px}
+.empty-state h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
+.empty-state p{font-size:13px;color:#7A7067}
+
+/* ── Pull to refresh hint ── */
+.pull-hint{text-align:center;padding:8px;font-size:11px;color:#BEB5AC;display:none}
+
+/* ── Phone link ── */
+a.phone-link{color:#C1714F;text-decoration:none;font-weight:600}
+a.phone-link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <img src="https://zenceramic.asia/wp-content/uploads/2025/12/Zen-Ceramic-Logo-Transparent-1000-x-1000-px-1.png" alt="ZC">
+      <span class="topbar-title">Staff Portal</span>
+    </div>
+    <div class="topbar-right">
+      <span class="branch-label" id="branchLabel">—</span>
+      <button class="btn-logout" id="logoutBtn">Log Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-tab="today">Today</div>
+  <div class="tab" data-tab="week">Week Ahead</div>
+</div>
+
+<!-- Main Content -->
+<div class="content" id="mainContent">
+  <div class="page-loading" id="pageLoading">
+    <div class="spinner"></div>
+    <p>Loading today's bookings…</p>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+var API_URL = "https://script.google.com/macros/s/AKfycbyUQnfr3H6buEBk0xH6Rv8ycY1casqT4P2wdNv45rrUjC-n99plmdWV6C_J6dOe9JZ7/exec";
+
+// ══════════════════════════════════════════════════════════════
+// SESSION
+// ══════════════════════════════════════════════════════════════
+var session = null;
+var currentBranch = null;
+var currentTab = "today";
+
+(function checkAuth() {
+  var raw = sessionStorage.getItem("zc_staff");
+  if (!raw) { window.location.href = "index.html"; return; }
+  try {
+    session = JSON.parse(raw);
+    if (!session.phone || !session.pin) throw new Error("bad session");
+    currentBranch = session.branchId;
+    document.getElementById("branchLabel").textContent = getBranchName(currentBranch);
+  } catch(e) {
+    sessionStorage.removeItem("zc_staff");
+    window.location.href = "index.html";
+  }
+})();
+
+function getBranchName(id) {
+  if (!session || !session.branches) return id;
+  var b = session.branches.find(function(br) { return br.id === id; });
+  return b ? b.name : id;
+}
+
+// ══════════════════════════════════════════════════════════════
+// API HELPERS
+// ══════════════════════════════════════════════════════════════
+function apiGet(action, extraParams) {
+  var params = "action=" + action + "&phone=" + encodeURIComponent(session.phone) +
+               "&pin=" + encodeURIComponent(session.pin);
+  if (extraParams) {
+    Object.keys(extraParams).forEach(function(k) {
+      params += "&" + k + "=" + encodeURIComponent(extraParams[k]);
+    });
+  }
+  return fetch(API_URL + "?" + params, { redirect: "follow" })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error === "Unauthorized") {
+        sessionStorage.removeItem("zc_staff");
+        window.location.href = "index.html";
+        throw new Error("Unauthorized");
+      }
+      return data;
+    });
+}
+
+function apiPost(payload) {
+  payload.phone = session.phone;
+  payload.pin = session.pin;
+  return fetch(API_URL, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(payload)
+  }).then(function(r) { return r.json(); });
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOGOUT
+// ══════════════════════════════════════════════════════════════
+document.getElementById("logoutBtn").addEventListener("click", function() {
+  sessionStorage.removeItem("zc_staff");
+  window.location.href = "index.html";
+});
+
+// ══════════════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════════════
+document.querySelectorAll(".tab").forEach(function(tab) {
+  tab.addEventListener("click", function() {
+    document.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
+    this.classList.add("active");
+    currentTab = this.dataset.tab;
+    if (currentTab === "today") loadToday();
+    else if (currentTab === "week") loadWeek();
+  });
+});
+
+// ══════════════════════════════════════════════════════════════
+// TODAY VIEW
+// ══════════════════════════════════════════════════════════════
+function loadToday() {
+  var content = document.getElementById("mainContent");
+  content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading today\'s bookings…</p></div>';
+
+  apiGet("staffTodayBookings", { branchId: currentBranch })
+    .then(function(data) {
+      if (!data.ok) {
+        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load bookings") + '</p></div>';
+        return;
+      }
+      renderToday(data);
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3><p>Could not reach the server. Pull down to retry.</p></div>';
+      console.error(err);
+    });
+}
+
+function renderToday(data) {
+  var content = document.getElementById("mainContent");
+  var totalPax = 0, totalBookings = 0, checkedIn = 0;
+
+  data.slots.forEach(function(slot) {
+    slot.bookings.forEach(function(b) {
+      totalPax += b.pax;
+      totalBookings++;
+      if (b.status.toLowerCase() === "checked-in") checkedIn += b.pax;
+    });
+  });
+
+  // Format date nicely
+  var dateObj = new Date(data.date + "T00:00:00+08:00");
+  var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var dateStr = days[dateObj.getDay()] + ", " + dateObj.getDate() + " " + months[dateObj.getMonth()];
+
+  var html = '';
+
+  // Branch picker for managers
+  if (session.role === "manager" && session.branches && session.branches.length > 1) {
+    html += '<div class="branch-picker">';
+    session.branches.forEach(function(b) {
+      html += '<div class="branch-chip' + (b.id === currentBranch ? ' active' : '') + '" data-branch="' + b.id + '">' + b.name + '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Date header + refresh
+  html += '<div class="date-header">';
+  html += '  <div><h2>' + dateStr + '</h2><div class="date-sub">' + data.branch + '</div></div>';
+  html += '  <button class="btn-refresh" id="refreshBtn" title="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>';
+  html += '</div>';
+
+  // Summary bar
+  html += '<div class="summary-bar">';
+  html += '  <div class="summary-item"><div class="summary-num">' + totalBookings + '</div><div class="summary-label">Bookings</div></div>';
+  html += '  <div class="summary-item"><div class="summary-num">' + totalPax + '</div><div class="summary-label">Total Pax</div></div>';
+  html += '  <div class="summary-item"><div class="summary-num">' + checkedIn + '/' + totalPax + '</div><div class="summary-label">Checked In</div></div>';
+  html += '</div>';
+
+  // Slot sections
+  data.slots.forEach(function(slot) {
+    html += '<div class="slot-section">';
+    html += '<div class="slot-header">';
+    html += '  <span class="slot-time">🕐 ' + slot.slot + '</span>';
+    html += '  <span class="slot-count"><span class="num">' + slot.bookedSeats + '</span>/' + slot.maxSeats + ' seats</span>';
+    html += '</div>';
+
+    if (slot.bookings.length === 0) {
+      html += '<div class="slot-empty">No bookings for this slot</div>';
+    } else {
+      slot.bookings.forEach(function(b) {
+        var statusLower = b.status.toLowerCase().trim();
+        var isCheckedIn = statusLower === "checked-in";
+        var statusBadge = '';
+        if (isCheckedIn) statusBadge = '<span class="status-badge status-checked">Checked In</span>';
+        else if (statusLower === "collect on arrival") statusBadge = '<span class="status-badge status-collect">Collect on Arrival</span>';
+        else statusBadge = '<span class="status-badge status-paid">Paid</span>';
+
+        // Parse participants
+        var partsList = b.participants.split(";").map(function(p) { return p.trim(); }).filter(Boolean);
+
+        html += '<div class="booking-card">';
+        html += '  <div class="booking-top">';
+        html += '    <div><span class="booking-name">' + esc(b.contactName) + '</span> <span class="booking-pax">' + b.pax + ' pax</span>' + statusBadge + '<div class="booking-id">' + b.bookingId + '</div></div>';
+        html += '  </div>';
+        html += '  <div class="booking-meta">';
+        html += '    <a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
+        if (b.amount) html += ' · RM' + b.amount;
+        html += '  </div>';
+
+        if (partsList.length > 0) {
+          html += '  <div class="booking-participants">';
+          partsList.forEach(function(p, idx) {
+            html += (idx + 1) + '. ' + esc(p) + '<br>';
+          });
+          html += '  </div>';
+        }
+
+        // Check-in button
+        html += '  <button class="btn-checkin' + (isCheckedIn ? ' checked-in' : '') + '" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '">';
+        html += '    <span class="check-icon">' + (isCheckedIn ? '✓' : '') + '</span>';
+        html += '    <span>' + (isCheckedIn ? 'Checked In' : 'Check In') + '</span>';
+        html += '  </button>';
+
+        html += '</div>';
+      });
+    }
+    html += '</div>';
+  });
+
+  // No bookings at all
+  if (totalBookings === 0) {
+    html += '<div class="empty-state"><div class="icon">☀️</div><h3>No bookings today</h3><p>Enjoy the quiet — or check the week ahead view.</p></div>';
+  }
+
+  content.innerHTML = html;
+
+  // Bind events
+  bindTodayEvents();
+}
+
+function bindTodayEvents() {
+  // Refresh button
+  var refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function() {
+      refreshBtn.classList.add("spinning");
+      loadToday();
+    });
+  }
+
+  // Branch picker
+  document.querySelectorAll(".branch-chip").forEach(function(chip) {
+    chip.addEventListener("click", function() {
+      currentBranch = this.dataset.branch;
+      document.getElementById("branchLabel").textContent = getBranchName(currentBranch);
+      loadToday();
+    });
+  });
+
+  // Check-in buttons
+  document.querySelectorAll(".btn-checkin").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var bookingId = this.dataset.bookingId;
+      var row = this.dataset.row;
+      handleCheckIn(btn, bookingId, row);
+    });
+  });
+}
+
+function handleCheckIn(btn, bookingId, row) {
+  btn.classList.add("checking");
+
+  apiPost({ action: "staffCheckIn", bookingId: bookingId, row: row })
+    .then(function(data) {
+      btn.classList.remove("checking");
+      if (data.ok) {
+        var isNowChecked = data.newStatus === "checked-in";
+        btn.classList.toggle("checked-in", isNowChecked);
+        btn.querySelector(".check-icon").textContent = isNowChecked ? "✓" : "";
+        btn.querySelector("span:last-child").textContent = isNowChecked ? "Checked In" : "Check In";
+
+        // Update summary counts (quick refresh)
+        setTimeout(function() { loadToday(); }, 500);
+      } else {
+        alert(data.error || "Check-in failed");
+        loadToday();
+      }
+    })
+    .catch(function(err) {
+      btn.classList.remove("checking");
+      alert("Connection error — try again");
+      console.error(err);
+    });
+}
+
+// ══════════════════════════════════════════════════════════════
+// WEEK VIEW
+// ══════════════════════════════════════════════════════════════
+function loadWeek() {
+  var content = document.getElementById("mainContent");
+  content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading week ahead…</p></div>';
+
+  apiGet("staffWeekBookings", { branchId: currentBranch })
+    .then(function(data) {
+      if (!data.ok) {
+        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load data") + '</p></div>';
+        return;
+      }
+      renderWeek(data);
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3><p>Could not reach the server.</p></div>';
+      console.error(err);
+    });
+}
+
+function renderWeek(data) {
+  var content = document.getElementById("mainContent");
+  var html = '';
+
+  // Branch picker for managers
+  if (session.role === "manager" && session.branches && session.branches.length > 1) {
+    html += '<div class="branch-picker">';
+    session.branches.forEach(function(b) {
+      html += '<div class="branch-chip' + (b.id === currentBranch ? ' active' : '') + '" data-branch="' + b.id + '">' + b.name + '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="date-header"><div><h2>Week Ahead</h2><div class="date-sub">' + data.branch + '</div></div>';
+  html += '<button class="btn-refresh" id="refreshWeekBtn" title="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></div>';
+
+  html += '<div class="week-grid">';
+  data.days.forEach(function(day) {
+    var dateObj = new Date(day.date + "T00:00:00+08:00");
+    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var dateLabel = dateObj.getDate() + " " + months[dateObj.getMonth()];
+
+    html += '<div class="week-day' + (day.isClosed ? ' closed' : '') + '">';
+    html += '<div class="week-day-header">';
+    html += '  <span class="week-day-name">' + day.dayName + '</span>';
+    html += '  <span class="week-day-date">' + dateLabel + '</span>';
+    html += '</div>';
+
+    if (day.isClosed) {
+      html += '<div class="week-day-closed">Closed</div>';
+    } else {
+      html += '<div class="week-slots">';
+      var slotKeys = Object.keys(day.slots);
+      slotKeys.forEach(function(s) {
+        var sl = day.slots[s];
+        var isFull = sl.booked >= sl.max;
+        var hasBookings = sl.booked > 0;
+        html += '<div class="week-slot' + (isFull ? ' full' : (hasBookings ? ' has-bookings' : '')) + '">';
+        html += s.split(" - ")[0] + ' <span class="slot-fill">' + sl.booked + '/' + sl.max + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+
+  content.innerHTML = html;
+
+  // Bind week events
+  var refreshWeekBtn = document.getElementById("refreshWeekBtn");
+  if (refreshWeekBtn) {
+    refreshWeekBtn.addEventListener("click", function() {
+      refreshWeekBtn.classList.add("spinning");
+      loadWeek();
+    });
+  }
+
+  document.querySelectorAll(".branch-chip").forEach(function(chip) {
+    chip.addEventListener("click", function() {
+      currentBranch = this.dataset.branch;
+      document.getElementById("branchLabel").textContent = getBranchName(currentBranch);
+      loadWeek();
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+function esc(str) {
+  var d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+loadToday();
+</script>
+
+</body>
+</html>
