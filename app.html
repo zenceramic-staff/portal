@@ -137,7 +137,12 @@ a.phone-link:hover{text-decoration:underline}
 .result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
 .result-date{font-size:12px;color:#7A7067;background:#F5F0EB;padding:3px 8px;border-radius:6px;white-space:nowrap}
 .result-detail{font-size:12px;color:#7A7067;line-height:1.6}
-.result-branch{font-size:11px;color:#C1714F;font-weight:600}
+.result-branch{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;display:inline-block}
+.branch-pj{background:#DBEAFE;color:#1E40AF}
+.branch-usj{background:#D1FAE5;color:#065F46}
+.branch-melaka{background:#EDE9FE;color:#5B21B6}
+.branch-setia{background:#FEF3C7;color:#92400E}
+.branch-hartamas{background:#FFE4DE;color:#9A3412}
 
 .status-pending{background:#FFF3CD;color:#856404}
 .status-cancelled{background:#F8D7DA;color:#721C24}
@@ -551,11 +556,11 @@ function loadSearch() {
   var content = document.getElementById("mainContent");
   var html = '';
 
-  html += '<div class="date-header"><div><h2>Customer Lookup</h2><div class="date-sub">Search by name, phone, or booking ID</div></div></div>';
+  html += '<div class="date-header"><div><h2>Customer Lookup</h2><div class="date-sub">Search by name, phone, email, or booking ID</div></div></div>';
 
   html += '<div class="search-box">';
   html += '  <span class="search-icon">🔍</span>';
-  html += '  <input class="search-input" id="searchInput" type="text" placeholder="e.g. Sarah, 012-345, ZC-SH-..." autocomplete="off">';
+  html += '  <input class="search-input" id="searchInput" type="text" placeholder="Name, phone, email, or booking ID" autocomplete="off">';
   html += '</div>';
   html += '<div id="searchResults"></div>';
 
@@ -631,7 +636,7 @@ function renderSearchResults(results, query) {
     html += '  </div>';
 
     html += '  <div class="result-detail">';
-    html += '    <span class="result-branch">' + esc(b.branch) + '</span> · ' + b.timeSlot;
+    html += '    <span class="result-branch ' + getBranchColorClass(b.branchId) + '">' + esc(b.branch) + '</span> · ' + b.timeSlot;
     html += '    <br><a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
     if (b.contactEmail) html += ' · ' + esc(b.contactEmail);
     html += '    <br>RM' + b.amount;
@@ -663,6 +668,16 @@ function esc(str) {
   var d = document.createElement("div");
   d.textContent = str;
   return d.innerHTML;
+}
+
+function getBranchColorClass(branchId) {
+  if (!branchId) return '';
+  if (branchId.indexOf('pj') !== -1 || branchId.indexOf('ss2') !== -1) return 'branch-pj';
+  if (branchId.indexOf('usj') !== -1) return 'branch-usj';
+  if (branchId.indexOf('melaka') !== -1) return 'branch-melaka';
+  if (branchId.indexOf('setia') !== -1) return 'branch-setia';
+  if (branchId.indexOf('hartamas') !== -1) return 'branch-hartamas';
+  return '';
 }
 
 // ══════════════════════════════════════════════════════════════
