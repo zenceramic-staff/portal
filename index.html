@@ -26,6 +26,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;display:f
 .pin-inputs{display:flex;gap:10px;justify-content:center}
 .pin-inputs input{width:56px;height:60px;text-align:center;font-size:24px;font-weight:700;padding:0;letter-spacing:0;border:1.5px solid #E8E0D8;border-radius:12px;font-family:'DM Sans',sans-serif;color:#2D2926;background:#fff;outline:none;transition:border-color .2s}
 .pin-inputs input:focus{border-color:#C1714F;background:#FFF9F5}
+.pin-inputs input{-webkit-text-security:disc;text-security:disc}
 
 .btn{width:100%;padding:16px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
 .btn-primary{background:#C1714F;color:#fff}
@@ -59,10 +60,10 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;display:f
   <div class="form-group">
     <label>4-Digit PIN</label>
     <div class="pin-inputs">
-      <input type="password" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="0" autocomplete="off">
-      <input type="password" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="1" autocomplete="off">
-      <input type="password" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="2" autocomplete="off">
-      <input type="password" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="3" autocomplete="off">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="0" autocomplete="off">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="1" autocomplete="off">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="2" autocomplete="off">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="3" autocomplete="off">
     </div>
   </div>
 
@@ -171,34 +172,33 @@ function attemptLogin() {
         });
       })
       .then(function(r) { return r.json(); })
-  .then(function(data) {
-    loadingEl.classList.remove("show");
-    if (data.ok) {
-      // Store session
-      sessionStorage.setItem("zc_staff", JSON.stringify({
-        phone: phone,
-        pin: pin,
-        name: data.staff.name,
-        branchId: data.staff.branchId,
-        role: data.staff.role,
-        branches: data.branches,
-      }));
-      window.location.href = "app.html";
-    } else {
-      errorEl.textContent = data.error || "Login failed. Check your phone number and PIN.";
-      loginBtn.disabled = false;
-      // Shake animation
-      document.querySelector(".pin-inputs").style.animation = "shake 0.4s";
-      setTimeout(function() {
-        document.querySelector(".pin-inputs").style.animation = "";
-      }, 400);
-    }
-  })
-  .catch(function(err) {
-    loadingEl.classList.remove("show");
-    errorEl.textContent = "Connection error — please try again.";
-    loginBtn.disabled = false;
-    console.error(err);
+      .then(function(data) {
+        loadingEl.classList.remove("show");
+        if (data.ok) {
+          sessionStorage.setItem("zc_staff", JSON.stringify({
+            phone: phone,
+            pin: pin,
+            name: data.staff.name,
+            branchId: data.staff.branchId,
+            role: data.staff.role,
+            branches: data.branches,
+          }));
+          window.location.href = "app.html";
+        } else {
+          errorEl.textContent = data.error || "Login failed. Check your phone number and PIN.";
+          loginBtn.disabled = false;
+          document.querySelector(".pin-inputs").style.animation = "shake 0.4s";
+          setTimeout(function() {
+            document.querySelector(".pin-inputs").style.animation = "";
+          }, 400);
+        }
+      })
+      .catch(function(err) {
+        loadingEl.classList.remove("show");
+        errorEl.textContent = "Connection error — please try again.";
+        loginBtn.disabled = false;
+        console.error(err);
+      });
   });
 }
 </script>
