@@ -6,6 +6,7 @@
 <title>Staff Login — Zen Ceramic</title>
 <link rel="icon" href="https://zenceramic.asia/wp-content/uploads/2025/12/Zen-Ceramic-Logo-Transparent-1000-x-1000-px-1.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld9dZgsAAAAAIXw1Q4S3VRYB9ngJywAi_CfO2tH"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -69,8 +70,15 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;display:f
   <div class="error-msg" id="error"></div>
   <div class="loading" id="loading"><div class="spinner"></div>Logging in…</div>
 
-  <div class="footer">Zen Ceramic 陶艺 — Internal Use Only</div>
+  <div class="footer">Zen Ceramic 陶艺 — Internal Use Only<br><span style="font-size:10px;color:#D4C5BC">Protected by reCAPTCHA</span></div>
 </div>
+
+<script>
+// Hide reCAPTCHA badge (allowed by Google when attribution text is shown)
+var style = document.createElement('style');
+style.textContent = '.grecaptcha-badge{visibility:hidden!important}';
+document.head.appendChild(style);
+</script>
 
 <script>
 // ── CONFIG ──
@@ -151,13 +159,18 @@ function attemptLogin() {
   loginBtn.disabled = true;
   loadingEl.classList.add("show");
 
-  fetch(API_URL, {
-    method: "POST",
-    redirect: "follow",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify({ action: "staffLogin", phone: phone, pin: pin })
-  })
-  .then(function(r) { return r.json(); })
+  // Get reCAPTCHA v3 token first, then send login
+  grecaptcha.ready(function() {
+    grecaptcha.execute("6Ld9dZgsAAAAAIXw1Q4S3VRYB9ngJywAi_CfO2tH", { action: "staff_login" })
+      .then(function(token) {
+        return fetch(API_URL, {
+          method: "POST",
+          redirect: "follow",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "staffLogin", phone: phone, pin: pin, recaptchaToken: token })
+        });
+      })
+      .then(function(r) { return r.json(); })
   .then(function(data) {
     loadingEl.classList.remove("show");
     if (data.ok) {
