@@ -18,18 +18,18 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;padding-b
 .topbar-title{font-family:'Playfair Display',serif;font-size:17px}
 .topbar-right{display:flex;align-items:center;gap:12px}
 .branch-label{font-size:12px;color:#7A7067;background:#F5F0EB;padding:4px 10px;border-radius:8px;font-weight:600}
+.btn-logout{background:none;border:1px solid #E8E0D8;border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#7A7067;cursor:pointer;transition:all .2s}
+.btn-logout:hover{border-color:#C1714F;color:#C1714F}
 
 /* ── Greeting bar ── */
 .greeting-bar{background:#FFF9F5;border-bottom:1px solid #F0E6DC;padding:10px 16px}
 .greeting-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .greeting-name{font-size:16px;font-weight:700;color:#C1714F}
 .greeting-role{font-size:11px;color:#7A7067;background:#F5F0EB;padding:3px 10px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.btn-logout{background:none;border:1px solid #E8E0D8;border-radius:8px;padding:6px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#7A7067;cursor:pointer;transition:all .2s}
-.btn-logout:hover{border-color:#C1714F;color:#C1714F}
 
 /* ── Tabs ── */
-.tabs{max-width:600px;margin:0 auto;display:flex;padding:12px 16px 0;gap:4px}
-.tab{flex:1;text-align:center;padding:10px;font-size:13px;font-weight:600;color:#7A7067;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;border-radius:8px 8px 0 0}
+.tabs{max-width:600px;margin:0 auto;display:flex;padding:12px 8px 0;gap:2px;overflow-x:auto}
+.tab{flex:1;min-width:70px;text-align:center;padding:10px 6px;font-size:12px;font-weight:600;color:#7A7067;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;border-radius:8px 8px 0 0;white-space:nowrap}
 .tab:hover{color:#2D2926;background:#F5F0EB}
 .tab.active{color:#C1714F;border-bottom-color:#C1714F;background:#FFF9F5}
 
@@ -37,10 +37,10 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;padding-b
 .content{max-width:600px;margin:0 auto;padding:16px}
 
 /* ── Date header ── */
-.date-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.date-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
 .date-header h2{font-family:'Playfair Display',serif;font-size:20px}
 .date-header .date-sub{font-size:13px;color:#7A7067}
-.btn-refresh{background:none;border:1px solid #E8E0D8;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:16px}
+.btn-refresh{background:none;border:1px solid #E8E0D8;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:16px;flex-shrink:0}
 .btn-refresh:hover{border-color:#C1714F;background:#FFF9F5}
 .btn-refresh.spinning svg{animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -69,20 +69,30 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;padding-b
 .booking-pax{display:inline-block;background:#FFF3CD;color:#856404;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
 .booking-participants{font-size:12px;color:#5A5249;margin-top:6px;line-height:1.6;padding:8px 10px;background:#FDFAF7;border-radius:8px}
 
-/* ── Check-in button ── */
-.btn-checkin{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px 14px;border-radius:10px;border:1.5px solid #E8E0D8;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#2D2926;cursor:pointer;transition:all .2s;width:100%}
+/* ── Action buttons row ── */
+.action-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.btn-checkin{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:10px;border:1.5px solid #E8E0D8;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#2D2926;cursor:pointer;transition:all .2s;min-height:40px}
 .btn-checkin:hover{border-color:#27AE60;background:#F0FFF4}
 .btn-checkin:active{transform:scale(0.98)}
-.btn-checkin .check-icon{width:22px;height:22px;border-radius:50%;border:2px solid #BEB5AC;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.btn-checkin .check-icon{width:22px;height:22px;border-radius:50%;border:2px solid #BEB5AC;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-size:12px}
 .btn-checkin.checked-in{border-color:#27AE60;background:#D4EDDA}
 .btn-checkin.checked-in .check-icon{background:#27AE60;border-color:#27AE60;color:#fff}
 .btn-checkin.checking{opacity:.6;pointer-events:none}
+
+.btn-journey{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:10px;border:1.5px solid #C1714F;background:#FFF9F5;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#C1714F;cursor:pointer;transition:all .2s;min-height:40px}
+.btn-journey:hover{background:#C1714F;color:#fff}
+.btn-journey:active{transform:scale(0.98)}
+.btn-journey.in-progress{background:#FFF3CD;border-color:#856404;color:#856404;cursor:default}
+.btn-journey.in-progress:hover{background:#FFF3CD;color:#856404}
 
 /* ── Status badges ── */
 .status-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;margin-left:6px}
 .status-paid{background:#D4EDDA;color:#155724}
 .status-collect{background:#FFE0B2;color:#E65100}
 .status-checked{background:#27AE60;color:#fff}
+.status-pending{background:#FFF3CD;color:#856404}
+.status-cancelled{background:#F8D7DA;color:#721C24}
+.status-expired{background:#E8E0D8;color:#7A7067}
 
 /* ── Week view ── */
 .week-grid{display:grid;gap:8px}
@@ -115,9 +125,6 @@ body{font-family:'DM Sans',sans-serif;background:#FDF8F3;color:#2D2926;padding-b
 .empty-state h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px}
 .empty-state p{font-size:13px;color:#7A7067}
 
-/* ── Pull to refresh hint ── */
-.pull-hint{text-align:center;padding:8px;font-size:11px;color:#BEB5AC;display:none}
-
 /* ── Phone link ── */
 a.phone-link{color:#C1714F;text-decoration:none;font-weight:600}
 a.phone-link:hover{text-decoration:underline}
@@ -131,9 +138,7 @@ a.phone-link:hover{text-decoration:underline}
 .search-hint{font-size:11px;color:#BEB5AC;margin-top:6px}
 .search-count{font-size:12px;color:#7A7067;margin-bottom:12px}
 
-/* ── Search result card ── */
-.result-card{background:#fff;border:1.5px solid #E8E0D8;border-radius:12px;padding:14px;margin-bottom:10px;transition:all .15s}
-.result-card:active{transform:scale(0.99)}
+.result-card{background:#fff;border:1.5px solid #E8E0D8;border-radius:12px;padding:14px;margin-bottom:10px}
 .result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
 .result-date{font-size:12px;color:#7A7067;background:#F5F0EB;padding:3px 8px;border-radius:6px;white-space:nowrap}
 .result-detail{font-size:12px;color:#7A7067;line-height:1.6}
@@ -144,9 +149,64 @@ a.phone-link:hover{text-decoration:underline}
 .branch-setia{background:#FEF3C7;color:#92400E}
 .branch-hartamas{background:#FFE4DE;color:#9A3412}
 
-.status-pending{background:#FFF3CD;color:#856404}
-.status-cancelled{background:#F8D7DA;color:#721C24}
-.status-expired{background:#E8E0D8;color:#7A7067}
+/* ── Journey tab ── */
+.journey-stage-section{margin-bottom:24px}
+.journey-stage-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border:1.5px solid #E8E0D8;border-radius:12px 12px 0 0;border-bottom:none;cursor:pointer}
+.journey-stage-header.collapsed{border-radius:12px;border-bottom:1.5px solid #E8E0D8}
+.journey-stage-title{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.journey-stage-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0}
+.stage-icon-1{background:#C1714F}
+.stage-icon-2{background:#E89A3F}
+.stage-icon-3{background:#9B6FBF}
+.stage-icon-4{background:#27AE60}
+.journey-stage-count{font-size:12px;color:#7A7067;font-weight:700}
+.journey-stage-count .num{color:#C1714F;font-size:14px}
+.journey-bulk-btn{font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid #C1714F;background:#fff;color:#C1714F;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;margin-left:8px}
+.journey-bulk-btn:hover{background:#C1714F;color:#fff}
+
+.journey-card{background:#fff;border-left:1.5px solid #E8E0D8;border-right:1.5px solid #E8E0D8;border-bottom:1.5px solid #E8E0D8;padding:14px}
+.journey-card:last-child{border-radius:0 0 12px 12px}
+.journey-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.journey-days-badge{font-size:10px;padding:2px 8px;border-radius:6px;background:#F5F0EB;color:#7A7067;font-weight:600;white-space:nowrap}
+.journey-days-badge.warn{background:#FFF3CD;color:#856404}
+.journey-photo-thumb{width:60px;height:60px;border-radius:8px;object-fit:cover;border:1px solid #E8E0D8;margin-top:8px}
+
+.btn-journey-action{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding:10px 14px;border-radius:10px;border:1.5px solid #C1714F;background:#C1714F;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;width:100%}
+.btn-journey-action:hover{background:#A85D3F;border-color:#A85D3F}
+.btn-journey-action:active{transform:scale(0.98)}
+.btn-journey-action.advancing{opacity:.6;pointer-events:none}
+.btn-journey-secondary{background:#fff;color:#C1714F}
+.btn-journey-secondary:hover{background:#FFF9F5;color:#C1714F}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(45,41,38,0.6);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:480px;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-header{padding:18px 20px;border-bottom:1px solid #E8E0D8;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Playfair Display',serif;font-size:18px}
+.modal-close{background:none;border:none;font-size:24px;color:#7A7067;cursor:pointer;line-height:1;padding:0 4px}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 20px;border-top:1px solid #E8E0D8;display:flex;gap:10px}
+.modal-footer .btn{flex:1;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none}
+.btn-cancel{background:#F5F0EB;color:#7A7067}
+.btn-cancel:hover{background:#E8E0D8}
+.btn-confirm{background:#C1714F;color:#fff}
+.btn-confirm:hover{background:#A85D3F}
+
+.bulk-list{margin:0;padding:0;list-style:none}
+.bulk-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.bulk-item:hover{background:#FFF9F5}
+.bulk-item input[type="checkbox"]{width:18px;height:18px;accent-color:#C1714F;cursor:pointer}
+.bulk-item-info{flex:1;font-size:13px}
+.bulk-item-name{font-weight:700;color:#2D2926}
+.bulk-item-meta{font-size:11px;color:#7A7067;margin-top:2px}
+
+/* ── Photo capture ── */
+.photo-capture{padding:20px;text-align:center}
+.photo-preview{max-width:100%;max-height:300px;border-radius:12px;margin:14px 0;border:1px solid #E8E0D8}
+.photo-input{display:none}
+.photo-label{display:inline-block;padding:14px 24px;border-radius:12px;background:#C1714F;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
+.photo-label:hover{background:#A85D3F}
 </style>
 </head>
 <body>
@@ -165,7 +225,7 @@ a.phone-link:hover{text-decoration:underline}
   </div>
 </div>
 
-<!-- Staff greeting -->
+<!-- Greeting -->
 <div class="greeting-bar">
   <div class="greeting-inner">
     <span class="greeting-name" id="staffName">—</span>
@@ -177,6 +237,7 @@ a.phone-link:hover{text-decoration:underline}
 <div class="tabs">
   <div class="tab active" data-tab="today">Today</div>
   <div class="tab" data-tab="week">Week</div>
+  <div class="tab" data-tab="journey">Journey</div>
   <div class="tab" data-tab="search">Search</div>
 </div>
 
@@ -184,7 +245,19 @@ a.phone-link:hover{text-decoration:underline}
 <div class="content" id="mainContent">
   <div class="page-loading" id="pageLoading">
     <div class="spinner"></div>
-    <p>Loading today's bookings…</p>
+    <p>Loading…</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">—</span>
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
   </div>
 </div>
 
@@ -275,8 +348,26 @@ document.querySelectorAll(".tab").forEach(function(tab) {
     currentTab = this.dataset.tab;
     if (currentTab === "today") loadToday();
     else if (currentTab === "week") loadWeek();
+    else if (currentTab === "journey") loadJourney();
     else if (currentTab === "search") loadSearch();
   });
+});
+
+// ══════════════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════════════
+function openModal(title, bodyHtml, footerHtml) {
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalBody").innerHTML = bodyHtml;
+  document.getElementById("modalFooter").innerHTML = footerHtml || "";
+  document.getElementById("modalOverlay").classList.add("show");
+}
+function closeModal() {
+  document.getElementById("modalOverlay").classList.remove("show");
+}
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("modalOverlay").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -289,13 +380,13 @@ function loadToday() {
   apiGet("staffTodayBookings", { branchId: currentBranch })
     .then(function(data) {
       if (!data.ok) {
-        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load bookings") + '</p></div>';
+        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
         return;
       }
       renderToday(data);
     })
     .catch(function(err) {
-      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3><p>Could not reach the server. Pull down to retry.</p></div>';
+      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3><p>Could not reach the server.</p></div>';
       console.error(err);
     });
 }
@@ -312,7 +403,6 @@ function renderToday(data) {
     });
   });
 
-  // Format date nicely
   var dateObj = new Date(data.date + "T00:00:00+08:00");
   var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -320,7 +410,6 @@ function renderToday(data) {
 
   var html = '';
 
-  // Branch picker for managers
   if (session.role === "manager" && session.branches && session.branches.length > 1) {
     html += '<div class="branch-picker">';
     session.branches.forEach(function(b) {
@@ -329,26 +418,20 @@ function renderToday(data) {
     html += '</div>';
   }
 
-  // Date header + refresh
   html += '<div class="date-header">';
   html += '  <div><h2>' + dateStr + '</h2><div class="date-sub">' + data.branch + '</div></div>';
-  html += '  <button class="btn-refresh" id="refreshBtn" title="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>';
+  html += '  <button class="btn-refresh" id="refreshBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>';
   html += '</div>';
 
-  // Summary bar
   html += '<div class="summary-bar">';
   html += '  <div class="summary-item"><div class="summary-num">' + totalBookings + '</div><div class="summary-label">Bookings</div></div>';
   html += '  <div class="summary-item"><div class="summary-num">' + totalPax + '</div><div class="summary-label">Total Pax</div></div>';
   html += '  <div class="summary-item"><div class="summary-num">' + checkedIn + '/' + totalPax + '</div><div class="summary-label">Checked In</div></div>';
   html += '</div>';
 
-  // Slot sections
   data.slots.forEach(function(slot) {
     html += '<div class="slot-section">';
-    html += '<div class="slot-header">';
-    html += '  <span class="slot-time">🕐 ' + slot.slot + '</span>';
-    html += '  <span class="slot-count"><span class="num">' + slot.bookedSeats + '</span>/' + slot.maxSeats + ' seats</span>';
-    html += '</div>';
+    html += '<div class="slot-header"><span class="slot-time">🕐 ' + slot.slot + '</span><span class="slot-count"><span class="num">' + slot.bookedSeats + '</span>/' + slot.maxSeats + ' seats</span></div>';
 
     if (slot.bookings.length === 0) {
       html += '<div class="slot-empty">No bookings for this slot</div>';
@@ -361,31 +444,38 @@ function renderToday(data) {
         else if (statusLower === "collect on arrival") statusBadge = '<span class="status-badge status-collect">Collect on Arrival</span>';
         else statusBadge = '<span class="status-badge status-paid">Paid</span>';
 
-        // Parse participants
         var partsList = b.participants.split(";").map(function(p) { return p.trim(); }).filter(Boolean);
+        var journeyStage = (b.pieceJourney || "").toLowerCase().trim();
+        var canStartJourney = isCheckedIn && !journeyStage;
+        var journeyInProgress = journeyStage && ["created","greenware-firing","bisqueware-firing","ready"].indexOf(journeyStage) !== -1;
+        var journeyDone = journeyStage === "collected" || journeyStage === "delivered";
 
         html += '<div class="booking-card">';
-        html += '  <div class="booking-top">';
-        html += '    <div><span class="booking-name">' + esc(b.contactName) + '</span> <span class="booking-pax">' + b.pax + ' pax</span>' + statusBadge + '<div class="booking-id">' + b.bookingId + '</div></div>';
-        html += '  </div>';
-        html += '  <div class="booking-meta">';
-        html += '    <a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
+        html += '  <div class="booking-top"><div><span class="booking-name">' + esc(b.contactName) + '</span> <span class="booking-pax">' + b.pax + ' pax</span>' + statusBadge + '<div class="booking-id">' + b.bookingId + '</div></div></div>';
+        html += '  <div class="booking-meta"><a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
         if (b.amount) html += ' · RM' + b.amount;
-        html += '  </div>';
+        html += '</div>';
 
         if (partsList.length > 0) {
           html += '  <div class="booking-participants">';
-          partsList.forEach(function(p, idx) {
-            html += (idx + 1) + '. ' + esc(p) + '<br>';
-          });
+          partsList.forEach(function(p, idx) { html += (idx + 1) + '. ' + esc(p) + '<br>'; });
           html += '  </div>';
         }
 
-        // Check-in button
-        html += '  <button class="btn-checkin' + (isCheckedIn ? ' checked-in' : '') + '" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '">';
-        html += '    <span class="check-icon">' + (isCheckedIn ? '✓' : '') + '</span>';
-        html += '    <span>' + (isCheckedIn ? 'Checked In' : 'Check In') + '</span>';
-        html += '  </button>';
+        html += '  <div class="action-row">';
+        html += '    <button class="btn-checkin' + (isCheckedIn ? ' checked-in' : '') + '" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '">';
+        html += '      <span class="check-icon">' + (isCheckedIn ? '✓' : '') + '</span>';
+        html += '      <span>' + (isCheckedIn ? 'Checked In' : 'Check In') + '</span>';
+        html += '    </button>';
+
+        if (canStartJourney) {
+          html += '    <button class="btn-journey" data-action="start-journey" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '">🏺 Start Journey</button>';
+        } else if (journeyInProgress) {
+          html += '    <button class="btn-journey in-progress">🏺 ' + journeyStage.replace(/-/g, ' ') + '</button>';
+        } else if (journeyDone) {
+          html += '    <button class="btn-journey in-progress">✓ ' + journeyStage + '</button>';
+        }
+        html += '  </div>';
 
         html += '</div>';
       });
@@ -393,19 +483,15 @@ function renderToday(data) {
     html += '</div>';
   });
 
-  // No bookings at all
   if (totalBookings === 0) {
-    html += '<div class="empty-state"><div class="icon">☀️</div><h3>No bookings today</h3><p>Enjoy the quiet — or check the week ahead view.</p></div>';
+    html += '<div class="empty-state"><div class="icon">☀️</div><h3>No bookings today</h3><p>Enjoy the quiet — or check the week ahead.</p></div>';
   }
 
   content.innerHTML = html;
-
-  // Bind events
   bindTodayEvents();
 }
 
 function bindTodayEvents() {
-  // Refresh button
   var refreshBtn = document.getElementById("refreshBtn");
   if (refreshBtn) {
     refreshBtn.addEventListener("click", function() {
@@ -414,7 +500,6 @@ function bindTodayEvents() {
     });
   }
 
-  // Branch picker
   document.querySelectorAll(".branch-chip").forEach(function(chip) {
     chip.addEventListener("click", function() {
       currentBranch = this.dataset.branch;
@@ -423,30 +508,26 @@ function bindTodayEvents() {
     });
   });
 
-  // Check-in buttons
   document.querySelectorAll(".btn-checkin").forEach(function(btn) {
     btn.addEventListener("click", function() {
-      var bookingId = this.dataset.bookingId;
-      var row = this.dataset.row;
-      handleCheckIn(btn, bookingId, row);
+      handleCheckIn(btn, this.dataset.bookingId, this.dataset.row);
+    });
+  });
+
+  document.querySelectorAll('[data-action="start-journey"]').forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      openStartJourneyFlow(this.dataset.bookingId, this.dataset.row);
     });
   });
 }
 
 function handleCheckIn(btn, bookingId, row) {
   btn.classList.add("checking");
-
   apiPost({ action: "staffCheckIn", bookingId: bookingId, row: row })
     .then(function(data) {
       btn.classList.remove("checking");
       if (data.ok) {
-        var isNowChecked = data.newStatus === "checked-in";
-        btn.classList.toggle("checked-in", isNowChecked);
-        btn.querySelector(".check-icon").textContent = isNowChecked ? "✓" : "";
-        btn.querySelector("span:last-child").textContent = isNowChecked ? "Checked In" : "Check In";
-
-        // Update summary counts (quick refresh)
-        setTimeout(function() { loadToday(); }, 500);
+        setTimeout(function() { loadToday(); }, 300);
       } else {
         alert(data.error || "Check-in failed");
         loadToday();
@@ -455,8 +536,90 @@ function handleCheckIn(btn, bookingId, row) {
     .catch(function(err) {
       btn.classList.remove("checking");
       alert("Connection error — try again");
-      console.error(err);
     });
+}
+
+// ══════════════════════════════════════════════════════════════
+// START POTTERY JOURNEY FLOW (with photo)
+// ══════════════════════════════════════════════════════════════
+function openStartJourneyFlow(bookingId, row) {
+  var body = '<div class="photo-capture">';
+  body += '<p style="font-size:14px;color:#7A7067;line-height:1.6;margin-bottom:12px">Take a group photo of the pieces created in this session, then start the pottery journey.</p>';
+  body += '<input type="file" accept="image/*" capture="environment" class="photo-input" id="journeyPhotoInput">';
+  body += '<label for="journeyPhotoInput" class="photo-label">📷 Take Photo</label>';
+  body += '<div id="photoPreviewWrap"></div>';
+  body += '</div>';
+
+  var footer = '<button class="btn btn-cancel" onclick="closeModal()">Cancel</button>';
+  footer += '<button class="btn btn-confirm" id="startJourneyConfirm" disabled style="opacity:0.5">Start Journey</button>';
+
+  openModal("Start Pottery Journey", body, footer);
+
+  var photoBase64 = null;
+  var input = document.getElementById("journeyPhotoInput");
+  var confirmBtn = document.getElementById("startJourneyConfirm");
+
+  input.addEventListener("change", function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      photoBase64 = ev.target.result;
+      document.getElementById("photoPreviewWrap").innerHTML = '<img class="photo-preview" src="' + photoBase64 + '">';
+      confirmBtn.disabled = false;
+      confirmBtn.style.opacity = "1";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Allow starting without photo too — make button enabled
+  setTimeout(function() {
+    confirmBtn.disabled = false;
+    confirmBtn.style.opacity = "1";
+    confirmBtn.textContent = "Start (Skip Photo)";
+    input.addEventListener("change", function() {
+      confirmBtn.textContent = "Start with Photo";
+    });
+  }, 100);
+
+  confirmBtn.addEventListener("click", function() {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Starting…";
+
+    var doStart = function(photoUrl) {
+      apiPost({ action: "startJourney", bookingId: bookingId, row: row, photoUrl: photoUrl || "" })
+        .then(function(data) {
+          closeModal();
+          if (data.ok) {
+            alert("Pottery journey started! E5 email sent to customer.");
+            loadToday();
+          } else {
+            alert("Error: " + (data.error || "Could not start journey"));
+          }
+        })
+        .catch(function(err) {
+          closeModal();
+          alert("Connection error");
+        });
+    };
+
+    if (photoBase64) {
+      apiPost({
+        action: "uploadJourneyPhoto",
+        bookingId: bookingId,
+        stage: "created",
+        base64Data: photoBase64,
+        mimeType: "image/jpeg"
+      })
+      .then(function(data) {
+        if (data.ok) doStart(data.photoUrl);
+        else { alert("Photo upload failed: " + data.error); confirmBtn.disabled = false; }
+      })
+      .catch(function() { alert("Upload error"); confirmBtn.disabled = false; });
+    } else {
+      doStart(null);
+    }
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -469,14 +632,13 @@ function loadWeek() {
   apiGet("staffWeekBookings", { branchId: currentBranch })
     .then(function(data) {
       if (!data.ok) {
-        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load data") + '</p></div>';
+        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
         return;
       }
       renderWeek(data);
     })
     .catch(function(err) {
-      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3><p>Could not reach the server.</p></div>';
-      console.error(err);
+      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3></div>';
     });
 }
 
@@ -484,7 +646,6 @@ function renderWeek(data) {
   var content = document.getElementById("mainContent");
   var html = '';
 
-  // Branch picker for managers
   if (session.role === "manager" && session.branches && session.branches.length > 1) {
     html += '<div class="branch-picker">';
     session.branches.forEach(function(b) {
@@ -493,9 +654,7 @@ function renderWeek(data) {
     html += '</div>';
   }
 
-  html += '<div class="date-header"><div><h2>Week Ahead</h2><div class="date-sub">' + data.branch + '</div></div>';
-  html += '<button class="btn-refresh" id="refreshWeekBtn" title="Refresh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></div>';
-
+  html += '<div class="date-header"><div><h2>Week Ahead</h2><div class="date-sub">' + data.branch + '</div></div></div>';
   html += '<div class="week-grid">';
   data.days.forEach(function(day) {
     var dateObj = new Date(day.date + "T00:00:00+08:00");
@@ -503,23 +662,17 @@ function renderWeek(data) {
     var dateLabel = dateObj.getDate() + " " + months[dateObj.getMonth()];
 
     html += '<div class="week-day' + (day.isClosed ? ' closed' : '') + '">';
-    html += '<div class="week-day-header">';
-    html += '  <span class="week-day-name">' + day.dayName + '</span>';
-    html += '  <span class="week-day-date">' + dateLabel + '</span>';
-    html += '</div>';
+    html += '<div class="week-day-header"><span class="week-day-name">' + day.dayName + '</span><span class="week-day-date">' + dateLabel + '</span></div>';
 
     if (day.isClosed) {
       html += '<div class="week-day-closed">Closed</div>';
     } else {
       html += '<div class="week-slots">';
-      var slotKeys = Object.keys(day.slots);
-      slotKeys.forEach(function(s) {
+      Object.keys(day.slots).forEach(function(s) {
         var sl = day.slots[s];
         var isFull = sl.booked >= sl.max;
         var hasBookings = sl.booked > 0;
-        html += '<div class="week-slot' + (isFull ? ' full' : (hasBookings ? ' has-bookings' : '')) + '">';
-        html += s.split(" - ")[0] + ' <span class="slot-fill">' + sl.booked + '/' + sl.max + '</span>';
-        html += '</div>';
+        html += '<div class="week-slot' + (isFull ? ' full' : (hasBookings ? ' has-bookings' : '')) + '">' + s.split(" - ")[0] + ' <span class="slot-fill">' + sl.booked + '/' + sl.max + '</span></div>';
       });
       html += '</div>';
     }
@@ -528,15 +681,6 @@ function renderWeek(data) {
   html += '</div>';
 
   content.innerHTML = html;
-
-  // Bind week events
-  var refreshWeekBtn = document.getElementById("refreshWeekBtn");
-  if (refreshWeekBtn) {
-    refreshWeekBtn.addEventListener("click", function() {
-      refreshWeekBtn.classList.add("spinning");
-      loadWeek();
-    });
-  }
 
   document.querySelectorAll(".branch-chip").forEach(function(chip) {
     chip.addEventListener("click", function() {
@@ -548,6 +692,304 @@ function renderWeek(data) {
 }
 
 // ══════════════════════════════════════════════════════════════
+// JOURNEY VIEW
+// ══════════════════════════════════════════════════════════════
+var STAGE_LABELS = {
+  "created": "Created",
+  "greenware-firing": "Greenware Firing",
+  "bisqueware-firing": "Bisqueware Firing",
+  "ready": "Ready to Collect"
+};
+var STAGE_ICONS = {
+  "created": { num: "1", cls: "stage-icon-1" },
+  "greenware-firing": { num: "2", cls: "stage-icon-2" },
+  "bisqueware-firing": { num: "3", cls: "stage-icon-3" },
+  "ready": { num: "4", cls: "stage-icon-4" }
+};
+var NEXT_STAGE_LABEL = {
+  "created": "Move to Greenware Firing",
+  "greenware-firing": "Move to Bisqueware Firing",
+  "bisqueware-firing": "Move to Ready"
+};
+
+function loadJourney() {
+  var content = document.getElementById("mainContent");
+  content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading pottery journey…</p></div>';
+
+  apiGet("getJourneyBookings", { branchId: currentBranch })
+    .then(function(data) {
+      if (!data.ok) {
+        content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
+        return;
+      }
+      renderJourney(data);
+    })
+    .catch(function(err) {
+      content.innerHTML = '<div class="empty-state"><div class="icon">📡</div><h3>Connection Error</h3></div>';
+    });
+}
+
+function renderJourney(data) {
+  var content = document.getElementById("mainContent");
+  var html = '';
+
+  if (session.role === "manager" && session.branches && session.branches.length > 1) {
+    html += '<div class="branch-picker">';
+    session.branches.forEach(function(b) {
+      html += '<div class="branch-chip' + (b.id === currentBranch ? ' active' : '') + '" data-branch="' + b.id + '">' + b.name + '</div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="date-header"><div><h2>Pottery Journey</h2><div class="date-sub">Track pieces from session to collection</div></div>';
+  html += '<button class="btn-refresh" id="refreshJourneyBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A7067" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>';
+  html += '</div>';
+
+  var totalInJourney = 0;
+  data.stages.forEach(function(s) { totalInJourney += (data.groups[s] || []).length; });
+
+  if (totalInJourney === 0) {
+    html += '<div class="empty-state"><div class="icon">🏺</div><h3>No active pieces</h3><p>Pieces will appear here once you start a pottery journey from the Today tab.</p></div>';
+    content.innerHTML = html;
+    bindJourneyEvents();
+    return;
+  }
+
+  data.stages.forEach(function(stage) {
+    var bookings = data.groups[stage] || [];
+    var icon = STAGE_ICONS[stage];
+    var label = STAGE_LABELS[stage];
+
+    html += '<div class="journey-stage-section">';
+    html += '<div class="journey-stage-header">';
+    html += '<div class="journey-stage-title"><div class="journey-stage-icon ' + icon.cls + '">' + icon.num + '</div>' + label + '</div>';
+    html += '<div>';
+    html += '<span class="journey-stage-count"><span class="num">' + bookings.length + '</span> booking' + (bookings.length !== 1 ? 's' : '') + '</span>';
+    if (bookings.length > 1 && stage !== "ready") {
+      html += '<button class="journey-bulk-btn" data-stage="' + stage + '">Advance All</button>';
+    }
+    html += '</div>';
+    html += '</div>';
+
+    if (bookings.length === 0) {
+      html += '<div class="slot-empty">No bookings in this stage</div>';
+    } else {
+      bookings.forEach(function(b) {
+        var daysClass = b.daysSinceSession > 14 ? "warn" : "";
+        var partsList = b.participants.split(";").map(function(p) { return p.trim(); }).filter(Boolean);
+
+        html += '<div class="journey-card">';
+        html += '<div class="journey-card-top">';
+        html += '<div><span class="booking-name">' + esc(b.contactName) + '</span> <span class="booking-pax">' + b.pax + ' pax</span><div class="booking-id">' + b.bookingId + '</div></div>';
+        html += '<span class="journey-days-badge ' + daysClass + '">' + b.daysSinceSession + ' days</span>';
+        html += '</div>';
+        html += '<div class="booking-meta"><a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a> · ' + b.date + '</div>';
+
+        if (partsList.length > 0) {
+          html += '<div class="booking-participants">';
+          partsList.forEach(function(p, idx) { html += (idx + 1) + '. ' + esc(p) + '<br>'; });
+          html += '</div>';
+        }
+
+        if (b.photos && b.photos.created) {
+          html += '<a href="' + b.photos.created + '" target="_blank"><img class="journey-photo-thumb" src="' + b.photos.created.replace("/view", "/preview") + '" onerror="this.style.display=\'none\'"></a>';
+        }
+
+        if (stage === "ready") {
+          html += '<button class="btn-journey-action" data-action="mark-collected" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '">✓ Mark Collected</button>';
+        } else {
+          html += '<button class="btn-journey-action" data-action="advance" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '" data-stage="' + stage + '">→ ' + (NEXT_STAGE_LABEL[stage] || "Advance") + '</button>';
+        }
+
+        html += '</div>';
+      });
+    }
+    html += '</div>';
+  });
+
+  content.innerHTML = html;
+  bindJourneyEvents();
+}
+
+function bindJourneyEvents() {
+  var refreshBtn = document.getElementById("refreshJourneyBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function() {
+      refreshBtn.classList.add("spinning");
+      loadJourney();
+    });
+  }
+
+  document.querySelectorAll(".branch-chip").forEach(function(chip) {
+    chip.addEventListener("click", function() {
+      currentBranch = this.dataset.branch;
+      document.getElementById("branchLabel").textContent = getBranchName(currentBranch);
+      loadJourney();
+    });
+  });
+
+  document.querySelectorAll('[data-action="advance"]').forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var stage = this.dataset.stage;
+      var nextStage = stage === "bisqueware-firing" ? "ready" : null;
+      if (nextStage === "ready") {
+        openReadyPhotoFlow(this.dataset.bookingId, this.dataset.row);
+      } else {
+        advanceBooking(btn, this.dataset.bookingId, this.dataset.row);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-action="mark-collected"]').forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      if (!confirm("Mark this piece as collected?")) return;
+      btn.classList.add("advancing");
+      apiPost({ action: "markCollected", bookingId: this.dataset.bookingId, row: this.dataset.row, mode: "collected" })
+        .then(function(data) {
+          if (data.ok) loadJourney();
+          else { alert("Error: " + data.error); btn.classList.remove("advancing"); }
+        });
+    });
+  });
+
+  document.querySelectorAll(".journey-bulk-btn").forEach(function(btn) {
+    btn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      openBulkAdvanceModal(this.dataset.stage);
+    });
+  });
+}
+
+function advanceBooking(btn, bookingId, row) {
+  btn.classList.add("advancing");
+  apiPost({ action: "advanceJourney", bookingId: bookingId, row: row })
+    .then(function(data) {
+      if (data.ok) {
+        loadJourney();
+      } else {
+        alert("Error: " + (data.error || "Could not advance"));
+        btn.classList.remove("advancing");
+      }
+    })
+    .catch(function() {
+      btn.classList.remove("advancing");
+      alert("Connection error");
+    });
+}
+
+function openReadyPhotoFlow(bookingId, row) {
+  var body = '<div class="photo-capture">';
+  body += '<p style="font-size:14px;color:#7A7067;line-height:1.6;margin-bottom:12px">Take a finished photo of the pottery piece(s) before marking as ready for collection. The customer will receive an email with this photo.</p>';
+  body += '<input type="file" accept="image/*" capture="environment" class="photo-input" id="readyPhotoInput">';
+  body += '<label for="readyPhotoInput" class="photo-label">📷 Take Photo</label>';
+  body += '<div id="readyPhotoPreviewWrap"></div>';
+  body += '</div>';
+
+  var footer = '<button class="btn btn-cancel" onclick="closeModal()">Cancel</button>';
+  footer += '<button class="btn btn-confirm" id="readyConfirm">Mark Ready (Skip Photo)</button>';
+
+  openModal("Mark as Ready to Collect", body, footer);
+
+  var photoBase64 = null;
+  var input = document.getElementById("readyPhotoInput");
+  var confirmBtn = document.getElementById("readyConfirm");
+
+  input.addEventListener("change", function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      photoBase64 = ev.target.result;
+      document.getElementById("readyPhotoPreviewWrap").innerHTML = '<img class="photo-preview" src="' + photoBase64 + '">';
+      confirmBtn.textContent = "Mark Ready with Photo";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  confirmBtn.addEventListener("click", function() {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Processing…";
+
+    var doAdvance = function(photoUrl) {
+      apiPost({ action: "advanceJourney", bookingId: bookingId, row: row, photoUrl: photoUrl || "" })
+        .then(function(data) {
+          closeModal();
+          if (data.ok) {
+            alert("Marked ready! E8 email sent to customer.");
+            loadJourney();
+          } else {
+            alert("Error: " + data.error);
+          }
+        });
+    };
+
+    if (photoBase64) {
+      apiPost({
+        action: "uploadJourneyPhoto",
+        bookingId: bookingId,
+        stage: "ready",
+        base64Data: photoBase64,
+        mimeType: "image/jpeg"
+      })
+      .then(function(data) {
+        if (data.ok) doAdvance(data.photoUrl);
+        else { alert("Photo upload failed: " + data.error); confirmBtn.disabled = false; }
+      });
+    } else {
+      doAdvance(null);
+    }
+  });
+}
+
+function openBulkAdvanceModal(stage) {
+  apiGet("getJourneyBookings", { branchId: currentBranch })
+    .then(function(data) {
+      if (!data.ok) { alert(data.error); return; }
+      var bookings = data.groups[stage] || [];
+      if (bookings.length === 0) { alert("No bookings to advance"); return; }
+
+      var body = '<p style="font-size:13px;color:#7A7067;margin-bottom:14px">Select bookings to advance from <strong>' + STAGE_LABELS[stage] + '</strong> to next stage. Each selected booking will get an email.</p>';
+      body += '<ul class="bulk-list">';
+      bookings.forEach(function(b, idx) {
+        body += '<li class="bulk-item"><input type="checkbox" id="bulk' + idx + '" data-booking-id="' + b.bookingId + '" data-row="' + b.row + '" checked>';
+        body += '<label for="bulk' + idx + '" class="bulk-item-info">';
+        body += '<div class="bulk-item-name">' + esc(b.contactName) + ' (' + b.pax + ' pax)</div>';
+        body += '<div class="bulk-item-meta">' + b.bookingId + ' · ' + b.date + ' · ' + b.daysSinceSession + ' days</div>';
+        body += '</label></li>';
+      });
+      body += '</ul>';
+
+      var footer = '<button class="btn btn-cancel" onclick="closeModal()">Cancel</button>';
+      footer += '<button class="btn btn-confirm" id="bulkConfirm">Advance Selected</button>';
+
+      openModal("Bulk Advance — " + STAGE_LABELS[stage], body, footer);
+
+      document.getElementById("bulkConfirm").addEventListener("click", function() {
+        var selected = [];
+        document.querySelectorAll(".bulk-item input:checked").forEach(function(cb) {
+          selected.push({ bookingId: cb.dataset.bookingId, row: cb.dataset.row });
+        });
+        if (selected.length === 0) { alert("Select at least one booking"); return; }
+        if (!confirm("Advance " + selected.length + " booking(s)? Each will get an email.")) return;
+
+        this.disabled = true;
+        this.textContent = "Processing " + selected.length + "…";
+
+        apiPost({ action: "advanceJourneyBulk", bookings: selected })
+          .then(function(data) {
+            closeModal();
+            if (data.ok) {
+              alert("Done! " + data.success + " advanced, " + data.errors + " errors");
+              loadJourney();
+            } else {
+              alert("Error: " + data.error);
+            }
+          });
+      });
+    });
+}
+
+// ══════════════════════════════════════════════════════════════
 // SEARCH VIEW
 // ══════════════════════════════════════════════════════════════
 var searchTimeout = null;
@@ -555,15 +997,9 @@ var searchTimeout = null;
 function loadSearch() {
   var content = document.getElementById("mainContent");
   var html = '';
-
   html += '<div class="date-header"><div><h2>Customer Lookup</h2><div class="date-sub">Search by name, phone, email, or booking ID</div></div></div>';
-
-  html += '<div class="search-box">';
-  html += '  <span class="search-icon">🔍</span>';
-  html += '  <input class="search-input" id="searchInput" type="text" placeholder="Name, phone, email, or booking ID" autocomplete="off">';
-  html += '</div>';
+  html += '<div class="search-box"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" type="text" placeholder="Name, phone, email, or booking ID" autocomplete="off"></div>';
   html += '<div id="searchResults"></div>';
-
   content.innerHTML = html;
 
   var input = document.getElementById("searchInput");
@@ -600,7 +1036,6 @@ function doSearch(q) {
     })
     .catch(function(err) {
       document.getElementById("searchResults").innerHTML = '<div class="empty-state"><div class="icon">📡</div><p>Connection error</p></div>';
-      console.error(err);
     });
 }
 
@@ -625,41 +1060,26 @@ function renderSearchResults(results, query) {
     var partsList = b.participants.split(";").map(function(p) { return p.trim(); }).filter(Boolean);
 
     html += '<div class="result-card">';
-    html += '  <div class="result-top">';
-    html += '    <div>';
-    html += '      <span class="booking-name">' + esc(b.contactName) + '</span> ';
-    html += '      <span class="booking-pax">' + b.pax + ' pax</span>';
-    html += '      <span class="status-badge ' + statusClass + '">' + esc(b.status) + '</span>';
-    html += '      <div class="booking-id">' + b.bookingId + '</div>';
-    html += '    </div>';
-    html += '    <span class="result-date">' + b.date + '</span>';
-    html += '  </div>';
-
-    html += '  <div class="result-detail">';
-    html += '    <span class="result-branch ' + getBranchColorClass(b.branchId) + '">' + esc(b.branch) + '</span> · ' + b.timeSlot;
-    html += '    <br><a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
+    html += '<div class="result-top"><div><span class="booking-name">' + esc(b.contactName) + '</span> <span class="booking-pax">' + b.pax + ' pax</span><span class="status-badge ' + statusClass + '">' + esc(b.status) + '</span><div class="booking-id">' + b.bookingId + '</div></div><span class="result-date">' + b.date + '</span></div>';
+    html += '<div class="result-detail"><span class="result-branch ' + getBranchColorClass(b.branchId) + '">' + esc(b.branch) + '</span> · ' + b.timeSlot;
+    html += '<br><a class="phone-link" href="tel:' + b.contactPhone.replace(/[^+\d]/g, '') + '">' + esc(b.contactPhone) + '</a>';
     if (b.contactEmail) html += ' · ' + esc(b.contactEmail);
-    html += '    <br>RM' + b.amount;
-    html += '  </div>';
+    html += '<br>RM' + b.amount;
+    html += '</div>';
 
     if (partsList.length > 0) {
-      html += '  <div class="booking-participants">';
-      partsList.forEach(function(p, idx) {
-        html += (idx + 1) + '. ' + esc(p) + '<br>';
-      });
-      html += '  </div>';
+      html += '<div class="booking-participants">';
+      partsList.forEach(function(p, idx) { html += (idx + 1) + '. ' + esc(p) + '<br>'; });
+      html += '</div>';
     }
-
     if (b.notes) {
-      html += '  <div style="font-size:11px;color:#7A7067;margin-top:6px;font-style:italic">' + esc(b.notes) + '</div>';
+      html += '<div style="font-size:11px;color:#7A7067;margin-top:6px;font-style:italic">' + esc(b.notes) + '</div>';
     }
-
     html += '</div>';
   });
 
   container.innerHTML = html;
 }
-
 
 // ══════════════════════════════════════════════════════════════
 // HELPERS
