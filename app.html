@@ -207,6 +207,9 @@ a.phone-link:hover{text-decoration:underline}
 .photo-input{display:none}
 .photo-label{display:inline-block;padding:14px 24px;border-radius:12px;background:#C1714F;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
 .photo-label:hover{background:#A85D3F}
+.photo-album{display:inline-block;padding:14px 24px;border-radius:12px;background:#fff;color:#C1714F;font-weight:700;font-size:14px;cursor:pointer;border:2px solid #C1714F;transition:all .2s;margin-left:8px}
+.photo-album:hover{background:#FDF8F3}
+.photo-btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 
 /* ── Quick action bar ── */
 .quick-actions{display:flex;gap:8px;margin-bottom:16px}
@@ -283,6 +286,21 @@ var API_URL = "https://script.google.com/macros/s/AKfycbyUQnfr3H6buEBk0xH6Rv8ycY
 var session = null;
 var currentBranch = null;
 var currentTab = "today";
+
+// ── Response cache (stale-while-revalidate) ──
+var _cache = {};
+var CACHE_TTL = 60000; // 60 seconds — refresh button bypasses this
+
+function cacheKey(tab) { return tab + ":" + currentBranch; }
+function getCached(tab) {
+  var k = cacheKey(tab);
+  var c = _cache[k];
+  if (!c) return null;
+  if (Date.now() - c.ts < CACHE_TTL) return c.data; // fresh
+  return null;
+}
+function setCached(tab, data) { _cache[cacheKey(tab)] = { data: data, ts: Date.now() }; }
+function clearCache() { _cache = {}; }
 
 (function checkAuth() {
   var raw = sessionStorage.getItem("zc_staff");
@@ -383,8 +401,10 @@ document.getElementById("modalOverlay").addEventListener("click", function(e) {
 // ══════════════════════════════════════════════════════════════
 // TODAY VIEW
 // ══════════════════════════════════════════════════════════════
-function loadToday() {
+function loadToday(forceRefresh) {
   var content = document.getElementById("mainContent");
+  var cached = !forceRefresh && getCached("today");
+  if (cached) { renderToday(cached); return; }
   content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading today\'s bookings…</p></div>';
 
   apiGet("staffTodayBookings", { branchId: currentBranch })
@@ -393,6 +413,7 @@ function loadToday() {
         content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
         return;
       }
+      setCached("today", data);
       renderToday(data);
     })
     .catch(function(err) {
@@ -506,7 +527,7 @@ function bindTodayEvents() {
   if (refreshBtn) {
     refreshBtn.addEventListener("click", function() {
       refreshBtn.classList.add("spinning");
-      loadToday();
+      loadToday(true);
     });
   }
 
@@ -514,7 +535,8 @@ function bindTodayEvents() {
     chip.addEventListener("click", function() {
       currentBranch = this.dataset.branch;
       document.getElementById("branchLabel").textContent = getBranchName(currentBranch);
-      loadToday();
+      clearCache();
+      loadToday(true);
     });
   });
 
@@ -536,8 +558,9 @@ function handleCheckIn(btn, bookingId, row) {
   apiPost({ action: "staffCheckIn", bookingId: bookingId, row: row })
     .then(function(data) {
       btn.classList.remove("checking");
+      clearCache();
       if (data.ok) {
-        setTimeout(function() { loadToday(); }, 300);
+        setTimeout(function() { loadToday(true); }, 300);
       } else {
         alert(data.error || "Check-in failed");
         loadToday();
@@ -556,7 +579,11 @@ function openStartJourneyFlow(bookingId, row) {
   var body = '<div class="photo-capture">';
   body += '<p style="font-size:14px;color:#7A7067;line-height:1.6;margin-bottom:12px">Take a group photo of the pieces created in this session, then start the pottery journey.</p>';
   body += '<input type="file" accept="image/*" capture="environment" class="photo-input" id="journeyPhotoInput">';
+  body += '<input type="file" accept="image/*" class="photo-input" id="journeyAlbumInput">';
+  body += '<div class="photo-btn-row">';
   body += '<label for="journeyPhotoInput" class="photo-label">📷 Take Photo</label>';
+  body += '<label for="journeyAlbumInput" class="photo-album">🖼️ From Album</label>';
+  body += '</div>';
   body += '<div id="photoPreviewWrap"></div>';
   body += '</div>';
 
@@ -567,9 +594,10 @@ function openStartJourneyFlow(bookingId, row) {
 
   var photoBase64 = null;
   var input = document.getElementById("journeyPhotoInput");
+  var albumInput = document.getElementById("journeyAlbumInput");
   var confirmBtn = document.getElementById("startJourneyConfirm");
 
-  input.addEventListener("change", function(e) {
+  function handleJourneyPhoto(e) {
     var file = e.target.files[0];
     if (!file) return;
     var reader = new FileReader();
@@ -578,18 +606,18 @@ function openStartJourneyFlow(bookingId, row) {
       document.getElementById("photoPreviewWrap").innerHTML = '<img class="photo-preview" src="' + photoBase64 + '">';
       confirmBtn.disabled = false;
       confirmBtn.style.opacity = "1";
+      confirmBtn.textContent = "Start with Photo";
     };
     reader.readAsDataURL(file);
-  });
+  }
+  input.addEventListener("change", handleJourneyPhoto);
+  albumInput.addEventListener("change", handleJourneyPhoto);
 
   // Allow starting without photo too — make button enabled
   setTimeout(function() {
     confirmBtn.disabled = false;
     confirmBtn.style.opacity = "1";
     confirmBtn.textContent = "Start (Skip Photo)";
-    input.addEventListener("change", function() {
-      confirmBtn.textContent = "Start with Photo";
-    });
   }, 100);
 
   confirmBtn.addEventListener("click", function() {
@@ -635,8 +663,10 @@ function openStartJourneyFlow(bookingId, row) {
 // ══════════════════════════════════════════════════════════════
 // WEEK VIEW
 // ══════════════════════════════════════════════════════════════
-function loadWeek() {
+function loadWeek(forceRefresh) {
   var content = document.getElementById("mainContent");
+  var cached = !forceRefresh && getCached("week");
+  if (cached) { renderWeek(cached); return; }
   content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading week ahead…</p></div>';
 
   apiGet("staffWeekBookings", { branchId: currentBranch })
@@ -645,6 +675,7 @@ function loadWeek() {
         content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
         return;
       }
+      setCached("week", data);
       renderWeek(data);
     })
     .catch(function(err) {
@@ -722,8 +753,10 @@ var NEXT_STAGE_LABEL = {
   "bisqueware-firing": "Move to Ready"
 };
 
-function loadJourney() {
+function loadJourney(forceRefresh) {
   var content = document.getElementById("mainContent");
+  var cached = !forceRefresh && getCached("journey");
+  if (cached) { renderJourney(cached); return; }
   content.innerHTML = '<div class="page-loading"><div class="spinner"></div><p>Loading pottery journey…</p></div>';
 
   apiGet("getJourneyBookings", { branchId: currentBranch })
@@ -732,6 +765,7 @@ function loadJourney() {
         content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error</h3><p>' + (data.error || "Could not load") + '</p></div>';
         return;
       }
+      setCached("journey", data);
       renderJourney(data);
     })
     .catch(function(err) {
@@ -903,7 +937,11 @@ function openReadyPhotoFlow(bookingId, row) {
   var body = '<div class="photo-capture">';
   body += '<p style="font-size:14px;color:#7A7067;line-height:1.6;margin-bottom:12px">Take a finished photo of the pottery piece(s) before marking as ready for collection. The customer will receive an email with this photo.</p>';
   body += '<input type="file" accept="image/*" capture="environment" class="photo-input" id="readyPhotoInput">';
+  body += '<input type="file" accept="image/*" class="photo-input" id="readyAlbumInput">';
+  body += '<div class="photo-btn-row">';
   body += '<label for="readyPhotoInput" class="photo-label">📷 Take Photo</label>';
+  body += '<label for="readyAlbumInput" class="photo-album">🖼️ From Album</label>';
+  body += '</div>';
   body += '<div id="readyPhotoPreviewWrap"></div>';
   body += '</div>';
 
@@ -914,9 +952,10 @@ function openReadyPhotoFlow(bookingId, row) {
 
   var photoBase64 = null;
   var input = document.getElementById("readyPhotoInput");
+  var albumInput = document.getElementById("readyAlbumInput");
   var confirmBtn = document.getElementById("readyConfirm");
 
-  input.addEventListener("change", function(e) {
+  function handleReadyPhoto(e) {
     var file = e.target.files[0];
     if (!file) return;
     var reader = new FileReader();
@@ -926,7 +965,9 @@ function openReadyPhotoFlow(bookingId, row) {
       confirmBtn.textContent = "Mark Ready with Photo";
     };
     reader.readAsDataURL(file);
-  });
+  }
+  input.addEventListener("change", handleReadyPhoto);
+  albumInput.addEventListener("change", handleReadyPhoto);
 
   confirmBtn.addEventListener("click", function() {
     confirmBtn.disabled = true;
@@ -1076,7 +1117,11 @@ function openMarkReadyFlow(bookingId, row) {
   var body = '<div class="photo-capture">';
   body += '<p style="font-size:14px;color:#7A7067;line-height:1.6;margin-bottom:12px">Take a photo of the finished pottery piece(s). The customer will receive a "Ready for Collection" email with this photo.</p>';
   body += '<input type="file" accept="image/*" capture="environment" class="photo-input" id="markReadyPhotoInput">';
+  body += '<input type="file" accept="image/*" class="photo-input" id="markReadyAlbumInput">';
+  body += '<div class="photo-btn-row">';
   body += '<label for="markReadyPhotoInput" class="photo-label">📷 Take Photo</label>';
+  body += '<label for="markReadyAlbumInput" class="photo-album">🖼️ From Album</label>';
+  body += '</div>';
   body += '<div id="markReadyPhotoPreview"></div>';
   body += '</div>';
 
@@ -1087,9 +1132,10 @@ function openMarkReadyFlow(bookingId, row) {
 
   var photoBase64 = null;
   var input = document.getElementById("markReadyPhotoInput");
+  var albumInput = document.getElementById("markReadyAlbumInput");
   var confirmBtn = document.getElementById("markReadyConfirm");
 
-  input.addEventListener("change", function(e) {
+  function handleMarkReadyPhoto(e) {
     var file = e.target.files[0];
     if (!file) return;
     var reader = new FileReader();
@@ -1099,7 +1145,9 @@ function openMarkReadyFlow(bookingId, row) {
       confirmBtn.textContent = "Mark Ready with Photo";
     };
     reader.readAsDataURL(file);
-  });
+  }
+  input.addEventListener("change", handleMarkReadyPhoto);
+  albumInput.addEventListener("change", handleMarkReadyPhoto);
 
   confirmBtn.addEventListener("click", function() {
     confirmBtn.disabled = true;
